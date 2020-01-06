@@ -1,5 +1,14 @@
+# vscode
+.settings
+.project
+
+# Intellij Idea
 .idea
 
+# gradle
 build
-# Project exclude paths
 /.gradle/
+
+# java
+bin
+.classpath
