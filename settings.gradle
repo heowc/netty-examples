@@ -1,3 +1,4 @@
 rootProject.name = 'netty-examples'
 
 include 'echo'
+include 'nio'

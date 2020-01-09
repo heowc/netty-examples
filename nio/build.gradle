@@ -23,5 +23,5 @@ test {
 }
 
 application {
-    mainClassName = 'com.example.EchoServer'
+    mainClassName = 'com.example.Main'
 }
