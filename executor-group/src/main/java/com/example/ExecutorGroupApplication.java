@@ -11,11 +11,11 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 
 import java.nio.charset.Charset;
 
-public class Main {
+public class ExecutorGroupApplication {
 
     private final int port;
 
-    public Main(int port) {
+    public ExecutorGroupApplication(int port) {
         this.port = port;
     }
 
@@ -32,22 +32,22 @@ public class Main {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) {
-                            ch.pipeline().addLast(executorGroup, new ChannelInboundHandlerAdapter() {
-                                @Override
-                                public void channelActive(ChannelHandlerContext ctx) {
-                                    // #eventLoopGroup
-                                    // Thread[nioEventLoopGroup-3-2,10,main]
-                                    // io.netty.channel.nio.NioEventLoop@f0f2775
+                            ch.pipeline()
+                                    .addLast(executorGroup, new SimpleChannelInboundHandler<ByteBuf>() {
+                                        @Override
+                                        protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) {
+                                            // #eventLoopGroup
+                                            // Thread[nioEventLoopGroup-3-2,10,main]
+                                            // io.netty.channel.nio.NioEventLoop@f0f2775
 
-                                    // #executorGroup
-                                    // Thread[defaultEventExecutorGroup-2-1,5,main]
-                                    // io.netty.util.concurrent.DefaultEventExecutor@1e4a7dd4
-                                    System.out.println(Thread.currentThread());
-                                    System.out.println(ctx.executor());
-                                    ctx.writeAndFlush(buf.duplicate())
-                                        .addListener(ChannelFutureListener.CLOSE);
-                                }
-                            });
+                                            // #executorGroup
+                                            // Thread[defaultEventExecutorGroup-2-1,5,main]
+                                            // io.netty.util.concurrent.DefaultEventExecutor@1e4a7dd4
+                                            System.out.println(Thread.currentThread());
+                                            System.out.println(ctx.executor());
+                                            ctx.writeAndFlush(buf.duplicate());
+                                        }
+                                    });
                         }
                     });
 
@@ -64,6 +64,6 @@ public class Main {
             port = Integer.parseInt(args[0]);
         }
 
-        new Main(port).run();
+        new ExecutorGroupApplication(port).run();
     }
 }

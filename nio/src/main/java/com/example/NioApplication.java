@@ -10,11 +10,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.nio.charset.Charset;
 
-public class Main {
+public class NioApplication {
 
     private final int port;
 
-    public Main(int port) {
+    public NioApplication(int port) {
         this.port = port;
     }
 
@@ -33,7 +33,7 @@ public class Main {
                                 @Override
                                 public void channelActive(ChannelHandlerContext ctx) {
                                     ctx.writeAndFlush(buf.duplicate())
-                                        .addListener(ChannelFutureListener.CLOSE);
+                                            .addListener(ChannelFutureListener.CLOSE);
                                 }
                             });
                         }
@@ -52,6 +52,6 @@ public class Main {
             port = Integer.parseInt(args[0]);
         }
 
-        new Main(port).run();
+        new NioApplication(port).run();
     }
 }
